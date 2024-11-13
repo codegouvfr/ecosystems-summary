@@ -1,0 +1,6 @@
+AWESOME_DOMAIN = ENV['AWESOME_DOMAIN'] || 'https://awesome.ecosyste.ms'
+COMMITS_DOMAIN = ENV['COMMITS_DOMAIN'] || 'https://commits.ecosyste.ms'
+ISSUES_DOMAIN = ENV['ISSUES_DOMAIN'] || 'https://issues.ecosyste.ms'
+PACKAGES_DOMAIN = ENV['PACKAGES_DOMAIN'] || 'https://packages.ecosyste.ms'
+REPOS_DOMAIN = ENV['REPOS_DOMAIN'] || 'https://repos.ecosyste.ms'
+TIMELINE_DOMAIN = ENV['TIMELINE_DOMAIN'] || 'https://timeline.ecosyste.ms'

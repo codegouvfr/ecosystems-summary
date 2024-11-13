@@ -89,20 +89,20 @@ class Project < ApplicationRecord
 
   def repos_ping_url
     return unless repository.present?
-    "https://repos.ecosyste.ms/api/v1/hosts/#{repository['host']['name']}/repositories/#{repository['full_name']}/ping"
+    "#{REPOS_DOMAIN}/api/v1/hosts/#{repository['host']['name']}/repositories/#{repository['full_name']}/ping"
   end
 
   def packages_ping_urls
     return [] unless packages.present?
     packages.map do |package|
-      ["https://packages.ecosyste.ms/api/v1/registries/#{package['registry']['name']}/packages/#{package['name']}/ping",
-      "https://repos.ecosyste.ms/api/v1/usage/#{package['ecosystem']}/#{package['name']}/ping"]
+      ["#{PACKAGES_DOMAIN}/api/v1/registries/#{package['registry']['name']}/packages/#{package['name']}/ping",
+      "#{REPOS_DOMAIN}/api/v1/usage/#{package['ecosystem']}/#{package['name']}/ping"]
     end.flatten
   end
 
   def owner_ping_url
     return unless repository.present?
-    "https://repos.ecosyste.ms/api/v1/hosts/#{repository['host']['name']}/owner/#{repository['owner']}/ping"
+    "#{REPOS_DOMAIN}/api/v1/hosts/#{repository['host']['name']}/owner/#{repository['owner']}/ping"
   end
 
   def description
@@ -111,7 +111,7 @@ class Project < ApplicationRecord
   end
 
   def repos_url
-    "https://repos.ecosyste.ms/api/v1/repositories/lookup?url=#{url}"
+    "#{REPOS_DOMAIN}/api/v1/repositories/lookup?url=#{url}"
   end
 
   def fetch_repository
@@ -133,7 +133,7 @@ class Project < ApplicationRecord
     return unless repository["owner"].present?
     return unless repository["host"].present?
     return unless repository["host"]["name"].present?
-    "https://repos.ecosyste.ms/api/v1/hosts/#{repository['host']['name']}/owners/#{repository['owner']}"
+    "#{REPOS_DOMAIN}/api/v1/hosts/#{repository['host']['name']}/owners/#{repository['owner']}"
   end
 
   def fetch_owner
@@ -155,7 +155,7 @@ class Project < ApplicationRecord
     return unless repository.present?
     return unless repository["host"]["name"] == "GitHub"
 
-    "https://timeline.ecosyste.ms/api/v1/events/#{repository['full_name']}/summary"
+    "#{TIMELINE_DOMAIN}/api/v1/events/#{repository['full_name']}/summary"
   end
 
   def fetch_events
@@ -191,7 +191,7 @@ class Project < ApplicationRecord
   # TODO fetch repo tags
 
   def packages_url
-    "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=#{url}"
+    "#{PACKAGES_DOMAIN}/api/v1/packages/lookup?repository_url=#{url}"
   end
 
   def fetch_packages
@@ -209,11 +209,11 @@ class Project < ApplicationRecord
   end
 
   def commits_api_url
-    "https://commits.ecosyste.ms/api/v1/repositories/lookup?url=#{url}"
+    "#{COMMITS_DOMAIN}/api/v1/repositories/lookup?url=#{url}"
   end
 
   def commits_url
-    "https://commits.ecosyste.ms/repositories/lookup?url=#{url}"
+    "#{COMMITS_DOMAIN}/repositories/lookup?url=#{url}"
   end
 
   def fetch_commits
@@ -294,7 +294,7 @@ class Project < ApplicationRecord
     packages.each do |package|
       # TODO paginate
       # TODO group dependencies by repo
-      dependent_repos_url = "https://repos.ecosyste.ms/api/v1/usage/#{package["ecosystem"]}/#{package["name"]}/dependencies"
+      dependent_repos_url = "#{REPOS_DOMAIN}/api/v1/usage/#{package["ecosystem"]}/#{package["name"]}/dependencies"
       conn = Faraday.new(url: dependent_repos_url)
       response = conn.get
       return unless response.success?
@@ -305,11 +305,11 @@ class Project < ApplicationRecord
   end
 
   def issues_api_url
-    "https://issues.ecosyste.ms/api/v1/repositories/lookup?url=#{url}"
+    "#{ISSUES_DOMAIN}/api/v1/repositories/lookup?url=#{url}"
   end
 
   def issues_url
-    "https://issues.ecosyste.ms/repositories/lookup?url=#{url}"
+    "#{ISSUES_DOMAIN}/repositories/lookup?url=#{url}"
   end
 
   def fetch_issues
@@ -446,7 +446,7 @@ class Project < ApplicationRecord
 
   def archive_url(path)
     return unless download_url.present?
-    "https://archives.ecosyste.ms/api/v1/archives/contents?url=#{download_url}&path=#{path}"
+    "#{ARCHIVES_DOMAIN}/api/v1/archives/contents?url=#{download_url}&path=#{path}"
   end
 
   def fetch_publiccode_yml

@@ -189,7 +189,7 @@ namespace :projects do
   task :ruby => :environment do
     collection = Collection.find_or_create_by!(name: 'Top Ruby Gems', url: 'https://www.ruby-lang.org/')
 
-    url = 'https://packages.ecosyste.ms/api/v1/registries/rubygems.org/packages?per_page=100&sort=downloads'
+    url = "#{PACKAGES_DOMAIN}/api/v1/registries/rubygems.org/packages?per_page=100&sort=downloads"
 
     conn = Faraday.new(url: url) do |faraday|
       faraday.response :follow_redirects
